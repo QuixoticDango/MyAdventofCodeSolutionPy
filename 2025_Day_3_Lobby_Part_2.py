@@ -1,4 +1,4 @@
-file = "C:\\Users\\lyndo\\Documents\\Coding and Programming Folder\\2025 Day 3 Advent of Code Input.txt"
+file = "C:\\Users\\DANGO\\Documents\\Coding and Programming Folder\\2025 Day 3 Advent of Code Input.txt"
 
 with open(file, 'rt') as f:
     banks = [line.strip() for line in f.readlines()]
