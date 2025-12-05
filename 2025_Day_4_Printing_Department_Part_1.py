@@ -1,13 +1,12 @@
 from itertools import product
 
-file = "C:\\Users\\lyndo\\Documents\\Coding and Programming Folder\\2025 Day 4 Advent of Code Input.txt"
+file = "C:\\Users\\DANGO\\Documents\\Coding and Programming Folder\\2025 Day 4 Advent of Code Input.txt"
 
 with open(file, 'rt') as f:
     grid = [row.strip() for row in f.readlines()]
 
 dir = list(product([i for i in range(-1, 2, 1)], repeat=2))
 dir = [tup for tup in dir if tup != (0,0)]
-# print(dir)
 
 accessible_paper_rolls = 0
 for i, row in enumerate(grid):
