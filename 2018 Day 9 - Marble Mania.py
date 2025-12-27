@@ -1,4 +1,4 @@
-# 476 players; last marble is worth 71657 points
+# 476 players; last marble is worth 71657 points - correct answer: 386018
 
 class Marble():
     marble_count = 0
@@ -21,8 +21,12 @@ class Marble():
         self.is_current_marble = False
         return self
     
+    def t(self):
+        self.is_current_marble = True
+        return self
+    
     def __str__(self):
-        return "Marble {} placed by player {}".format(self.number, self.player)
+        return "({})".format(self.number) if self.is_current_marble else str(self.number)
 
 class MarbleGame():
     def __init__(self, players=1):
@@ -42,6 +46,7 @@ class MarbleGame():
             self.current_marble_index = [i for i in range(len(self.circle)) 
                                     if self.circle[i].is_current_marble][0]
             self.turn += 1
+            # print(f"Initial marble placement: {list(map(str, self.circle))}")
             return self
         
         if Marble.marble_count >= 2 and Marble.marble_count % 23 != 0:
@@ -52,22 +57,26 @@ class MarbleGame():
                 for i, m in enumerate(self.circle):
                     if i != 1:
                         m.f()
+                # print(f"Marble placed right next to 0: {list(map(str, self.circle))}")
             elif self.current_marble_index == len(self.circle) - 2:
                 self.circle.append(Marble("P" + str(self.turn % len(self.players))).place_marble())
                 for i, m in enumerate(self.circle):
                     if i < len(self.circle) - 1:
                         m.f()
+                # print(f"Marble added to end of list: {list(map(str, self.circle))}")
             else:
                 self.circle.insert(self.current_marble_index + 2, Marble("P" + str(self.turn % len(self.players))).place_marble())
                 for i, m in enumerate(self.circle):
-                    if i == self.current_marble_index + 2:
+                    if i != self.current_marble_index + 2:
                         m.f()
+                # print(f"Marble placed two steps away from last one: {list(map(str, self.circle))}")
             self.current_marble_index = [i for i in range(len(self.circle)) 
                                     if self.circle[i].is_current_marble][0]
             self.turn += 1
             return self
         
         if Marble.marble_count % 23 == 0 and Marble.marble_count > 0:
+            # print(f"A player scored: {list(map(str, self.circle))}")
             unplaced_marble = Marble("P" + str(self.turn % len(self.players))).kept_marble()
             try:    
                 self.score = unplaced_marble.number + self.circle[(self.current_marble_index - 7) % len(self.circle)].number
@@ -76,10 +85,18 @@ class MarbleGame():
                 print(f"{len(self.circle)=}")
                 return 0
             self.players["P" + str(self.turn % len(self.players))] += self.score
+
+            for i, m in enumerate(self.circle):
+                if i == (self.current_marble_index - 9) % len(self.circle):
+                    m.t()
+                else:
+                    m.f()
+
             del self.circle[self.current_marble_index - 7]
-            self.current_marble_index -= 7
+            # self.current_marble_index -= 7
             self.last_player_scored = True
             self.turn += 1
+            # print(f"Circle after scoring: {list(map(str, self.circle))}")
             return self
         
         if self.last_player_scored:
@@ -89,6 +106,7 @@ class MarbleGame():
                     m.f()
             self.last_player_scored = False
             self.turn += 1
+            # print(f"Last player scored: {list(map, str(self.circle))}")
             return self
 
 
@@ -96,11 +114,14 @@ print(divmod(71657, 23))
 game = MarbleGame(476)
 players = game.players.keys()
 turns = 0
-while Marble.marble_count <= 71658:
+while Marble.marble_count <= 71657 + 1:
     game.place_marble()
     if turns % 23 == 0:
-        print(f"It is now player {turns % len(players)}'s turn")
-        print(f"Score = {game.score}")
+    #     print(f"Turn: {turns}")
+        print(f"{len(game.circle)} marbles have been placed.")
+    #     print(f"It is now player {turns % len(players)}'s turn")
+    #     print(f"Score = {game.score}")
+    #     print()
     turns += 1
 
 print([(player, game.players[player]) for player in players if game.players[player] == max(game.players[player] for player in players)][0])
