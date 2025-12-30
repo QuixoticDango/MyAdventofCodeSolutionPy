@@ -38,5 +38,6 @@ second_path = draw_path(second_wire)
 
 intersection_points = first_path.intersection(second_path)
 print(min(manhattan_distance(point) for point in intersection_points if point != 0))
-print(min(count_steps(first_wire, intersection) + count_steps(second_wire, intersection) for intersection in intersection_points))
+print(min(count_steps(first_wire, intersection) + count_steps(second_wire, intersection)
+          for intersection in intersection_points))
 
