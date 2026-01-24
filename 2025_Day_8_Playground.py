@@ -18,17 +18,10 @@ with open(file, 'rt') as f:
 circuits = []
 found_min_dist = []
 counter = 0
-# for counter in range(len(junctions)):
-    # min_dist = min(distance(n1, n2) 
-    #                for i, n1 in enumerate(junctions) 
-    #                for j, n2 in enumerate(junctions) 
-    #                if i != j and distance(n1, n2) not in found_min_dist)
 exception_reached = False
 while True:
     circuit_found = False
-    # print('while')
     if exception_reached:
-        # print("exception")
         break
     for i, n1 in enumerate(junctions):
         if circuit_found:
@@ -39,18 +32,14 @@ while True:
                     for j, n2 in enumerate(junctions)
                     if i != j and (n1, n2, distance(n1, n2)) not in found_min_dist)
         except:
-            # print(f"{n1=}")
             exception_reached = True
             break
         for j, n2 in enumerate(junctions):
-            # print('second for loop')
             if circuit_found:
                 break
             if distance(n1, n2) == min_dist:    
                 if len(circuits) > 0:
-                    # print('made it to circuits > 0')
                     for k, c in enumerate(circuits):
-                        # print(f"{k=} and {c=}")
                         if n1 not in c and n2 not in c:
                             circuits.append((n1, n2))
                             found_min_dist.append((n1, n2, min_dist))
@@ -72,18 +61,13 @@ while True:
                             circuit_found = True
                             break
 
-                        if (n1, n2, distance(n1, n2)) in found_min_dist\
-                              or (n2, n1, distance(n1, n2)) in found_min_dist:
-
                 if len(circuits) == 0:
-                    # print("made it to first condition")
                     circuits.append((n1, n2))
                     found_min_dist.append((n1, n2, min_dist))
                     found_min_dist.append((n2, n1, min_dist))
                     circuit_found = True
                     break
     counter += 1
-# circuits.sort(key=lambda c: len(c), reverse=True)
 print(circuits)
 
 

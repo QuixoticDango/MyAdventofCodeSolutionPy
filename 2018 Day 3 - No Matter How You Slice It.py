@@ -31,7 +31,6 @@ print(overlapping_area)
 
 # Part 2
 
-# is_overlapping = False
 overlapped_rectangles = []
 for key1 in claims.keys():
     if key1 in overlapped_rectangles:
@@ -41,13 +40,7 @@ for key1 in claims.keys():
             continue
         col1, row1, w1, h1 = claims[key1]
         col2, row2, w2, h2 = claims[key2]
-        # points1 = [(i, j) for i in range(row1, row1 + h1) for j in range(col1, col1 + w1)]
-        # points2 = [(h, k) for h in range(row2, row2 + h2) for k in range(col2, col2 + w2)]
-        # if any((i, j) == (h, k)
-        #        for i in range(row1, row1 + h1)
-        #        for j in range(col1, col1 + w1)
-        #        for h in range(row2, row2 + h2)
-        #        for k in range(col2, col2 + w2)):
+
         if any(row1 <= h <= row1 + h1 and col1 <= k <= col1 + w1
                for h in range(row2, row2 + h2)
                for k in range(col2, col2 + w2)):

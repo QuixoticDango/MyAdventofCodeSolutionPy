@@ -1,6 +1,8 @@
 import networkx as nx
 from networkx import algorithms
 
+# Part 1
+
 def count_predecessors(node, digraph):
     current_node = node
     s = 0
@@ -24,6 +26,9 @@ for node in graph_of_orbits.nodes:
 
 print(total_number_of_orbits)
 
+# Part 2
+
+# Change to undirected graph to allow bidirectional traversal.
 graph_of_orbits = graph_of_orbits.to_undirected()
 
 print(len(algorithms.bidirectional_shortest_path(graph_of_orbits, "YOU", "SAN")) - 3)
