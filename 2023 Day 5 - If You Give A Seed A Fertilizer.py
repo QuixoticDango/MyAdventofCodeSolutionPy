@@ -77,6 +77,48 @@ def find_location(seed):
     # print(f"{loc=}")
     return loc
 
+def find_next_step(item_rang, id):
+    item_start, item_end = item_rang
+    if id == 'seed':
+        start_is_in_range = False
+        end_is_in_range = False
+        soil_ranges = []
+        found = False
+        for key in seed_soil.keys():
+            start, end = key
+            if start <= item_start <= end:
+                soil_start = seed_soil[key][0] + (item_start - start)
+                start_is_in_range = True
+                break
+        for key in seed_soil.keys():
+            start, end = key
+            if start <= item_end <= end:
+                soil_end = seed_soil[key][0] + (item_end - start)
+                end_is_in_range = True
+                break
+        if start_is_in_range and end_is_in_range:
+            soil_ranges.append((soil_start, soil_end))
+            return soil_ranges
+        if not start_is_in_range and end_is_in_range:
+            key_list = list(seed_soil.keys())
+            key_list.sort(key=lambda s: s[0])
+            min_start_range = key_list[0]
+            soil_ranges.append((item_start, min_start_range[0] - 1))
+            soil_ranges.append((seed_soil[min_start_range][0],
+                                seed_soil[min_start_range][0] + (item_end - min_start_range[0])))
+        if start_is_in_range and not end_is_in_range:
+            key_list = list(seed_soil.keys())
+            key_list.sort(key=lambda s: s[0])
+            min_start_range = key_list[0]
+            soil_ranges.append((item_start, min_start_range[0] - 1))
+            soil_ranges.append((seed_soil[min_start_range][0],
+                                seed_soil[min_start_range][0] + (item_end - min_start_range[0])))
+
+            
+
+# def map_ranges(s_rang):
+#     for s_ran in 
+
 with open(file, 'rt') as f:
     separated_values = []
     lst = []
@@ -126,10 +168,13 @@ for i, lst in enumerate(separated_values):
 
 print(f"Part 1: {min(find_location(seed) for seed in seeds)}")
 
-part_2_seeds = []
-for i in range(0, len(seeds), 2):
-    if i < len(seeds) - 1:
-        tup = (seeds[i], seeds[i] + seeds[i+1] - 1)
-        part_2_seeds.append(tup)
+# part_2_seeds = []
+# for i in range(0, len(seeds), 2):
+#     if i < len(seeds) - 1:
+#         tup = (seeds[i], seeds[i] + seeds[i+1] - 1)
+#         part_2_seeds.append(tup)
 
-print(f"Part 2: {min(find_location(seed) for rng in part_2_seeds for seed in range(rng[0], rng[1] + 1))}")
+# print(f"Part 2: {min(find_location(seed) for rng in part_2_seeds for seed in range(rng[0], rng[1] + 1))}")
+
+seed_ranges = [(seeds[i], seeds[i] + seeds[i+1] - 1) for i in range(0, len(seeds), 2)]
+for ran in seed_ranges:
