@@ -114,7 +114,116 @@ def find_next_step(item_rang, id):
             soil_ranges.append((seed_soil[min_start_range][0],
                                 seed_soil[min_start_range][0] + (item_end - min_start_range[0])))
 
-            
+def is_in_range(n, rang):
+    start, end = rang
+    if start <= n <= end:
+        return True
+    return False
+
+def find_next_range(ranges, category):
+    sources = list(category.keys())
+    sources.sort(key=lambda m: m[0])
+    gap_ranges = []
+    gap_loc = []
+    filled_ranges = []
+    for i, s in enumerate(sources):
+        start, end = s
+        if i + 1 < len(sources):
+            if sources[i+1][0] - end > 1:
+                filled_ranges.append((sources[0][0], end))
+                gap_ranges.append((end + 1, sources[i+1][0] - 1))
+                gap_loc.append(i)
+        if i == len(sources) - 1:
+            filled_ranges.append((gap_ranges[-1][1] + 1, end))
+
+    dest = []
+    range_is_gap_adjacent = False
+    start_is_in_gap = False
+    end_is_in_gap = False
+    # bound_is_in_total_range = False
+    range_straddles_gap = False
+    for i, r in enumerate(ranges):
+        range_completed = False
+        bound_is_in_total_range = True
+        start, end = r
+        if start < sources[0][0]:
+            dest.append((start, sources[0][0] - 1))
+        if end > sources[-1][0]:
+            dest.append((sources[-1][0] + 1, end))
+        start_range_loc = -len(sources) - 1
+        end_range_loc = -len(sources) - 1
+        for j, source in enumerate(sources):
+            s_start, s_end = source
+            if s_start <= start <= s_end:
+                start_range_loc = j
+            if s_start <= end <= s_end:
+                end_range_loc = j
+            if start_range_loc
+            # Start and end within single source range
+            if s_start <= start <= s_end and s_start <= end <= s_end:
+                new_start = category[source][0] + (start - s_start)
+                new_end = category[source][0] + (end - s_start)
+                dest.append((new_start, new_end))
+
+
+
+
+
+
+        bound_is_in_total_range = False
+        both_bounds_are_mapped = False
+        start, end = r
+        if sources[0][0] <= start <= sources[-1][1] or sources[0][0] <= end <= sources[-1][1]:
+            bound_is_in_total_range = True
+        if any(filled_range[0] <= start <= filled_range[1] for filled_range in filled_ranges) and \
+            any(filled_range[0] <= start <= filled_range[1] for filled_range in filled_ranges):
+            both_bounds_are_mapped = True
+            if any(start < gap_range[0] and end > gap_range[1] for gap_range in gap_ranges)
+
+        for j, rang in enumerate(sources):
+            for gap in gap_ranges:
+                if not any(ran[0] <= start <= ran[1] for ran in sources):
+                        start_is_in_gap = True
+                if not any(ran[0] <= end <= ran[1] for ran in sources):
+                        end_is_in_gap = True
+                if rang[0] - 1 == gap[1] or rang[1] + 1 == gap[0]:
+                    adjacent_gap = gap
+                    range_is_gap_adjacent = True
+                    break
+            # left overlap with start in adjacent gap
+            if start < rang[0] and rang[0] <= end <= rang[1] and range_is_gap_adjacent:
+                dest.append((start, rang[0] - 1))
+                new_start = category[rang][0]
+                new_end = category[rang][0] + (end - rang[0])
+                dest.append((new_start, new_end))
+            # complete overlap
+            if rang[0] <= start <= rang[1] and rang[0] <= end <= rang[1]:
+                new_start = category[rang][0] + (start - rang[0])
+                new_end = category[rang][0] + (end - rang[0])
+                dest.append((new_start, new_end))
+            # right overlap
+            if rang[0] <= start <= rang[1] and rang[1] > end:
+                dest.append((rang[1] + 1, end))
+                new_start = category[rang][0]
+                new_end = category[rang][0] + (end - rang[0])
+                dest.append((new_start, new_end))
+# def consolidate_ranges(category):
+#     sources = list(category.keys())
+#     dest = list(category.values())
+#     sources.sort(key=lambda k: k[0])
+#     dest.sort(key=lambda k: k[0])
+
+#     there_is_an_overlap = True
+#     while there_is_an_overlap:
+#         there_is_an_overlap = False
+#         for i, s in enumerate(sources):
+#             s_start, s_end = s
+#             d_start, d_end = category[s]
+#             s_next_start, s_next_end = sources[i+1]
+#             d_next_start, d_next_end = category[sources[i+1]]
+#             if i + 1 < len(sources):
+#                 if s_end > s_next_start:
+
 
 # def map_ranges(s_rang):
 #     for s_ran in 
@@ -176,5 +285,15 @@ print(f"Part 1: {min(find_location(seed) for seed in seeds)}")
 
 # print(f"Part 2: {min(find_location(seed) for rng in part_2_seeds for seed in range(rng[0], rng[1] + 1))}")
 
-seed_ranges = [(seeds[i], seeds[i] + seeds[i+1] - 1) for i in range(0, len(seeds), 2)]
-for ran in seed_ranges:
+# seed_ranges = [(seeds[i], seeds[i] + seeds[i+1] - 1) for i in range(0, len(seeds), 2)]
+# for ran in seed_ranges:
+# print(seed_soil)
+lst = [[key, water_light[key]] for key in water_light.keys()]
+lst.sort(key=lambda n: n[0][0])
+# print(lst)
+for i, x in enumerate(lst):
+    s, d = x
+    print(s)
+    if i+1 < len(lst):
+        if lst[i+1][0][0] - s[1] > 1:
+            print(f"GAP: {lst[i+1][0][0] - s[1]}")
