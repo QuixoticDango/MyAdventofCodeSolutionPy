@@ -58,41 +58,93 @@ for d, n in instructions:
     if d == "L":
         while steps < n:
             curr_positions[0] = (curr_positions[0][0], curr_positions[0][1] - 1)
-            for i in range(10):
-                if i+1 < len(curr_positions):
-                    if not tail_is_touching(curr_positions[i], curr_positions[i+1]):
-                        curr_positions[i+1] = (curr_positions[i][0], curr_positions[i][1] + 1)
-                        if i+1 == 9:
-                            visited.add(curr_positions[i+1])
+            for i in range(9): # Iterate from head (0) to knot 8
+                head_x, head_y = curr_positions[i]
+                tail_x, tail_y = curr_positions[i+1]
+                
+                dx = head_x - tail_x
+                dy = head_y - tail_y
+                
+                # Check if touching (distance is at most 1 in any direction)
+                if abs(dx) > 1 or abs(dy) > 1:
+                    # Move the tail by the sign of the difference (-1, 0, or 1)
+                    # This automatically handles diagonal moves
+                    new_x = tail_x + (1 if dx > 0 else -1 if dx < 0 else 0)
+                    new_y = tail_y + (1 if dy > 0 else -1 if dy < 0 else 0)
+                    
+                    curr_positions[i+1] = (new_x, new_y)
+                    
+                    # If this is the last knot (index 9), record the position
+                    if i + 1 == 9:
+                        visited.add(curr_positions[i+1])
             steps += 1
     if d == "R":
         while steps < n:
             curr_positions[0] = (curr_positions[0][0], curr_positions[0][1] + 1)
-            for i in range(10):
-                if i+1 < len(curr_positions):
-                    if not tail_is_touching(curr_positions[i], curr_positions[i+1]):
-                        curr_positions[i+1] = (curr_positions[i][0], curr_positions[i][1] - 1)
-                        if i+1 == 9:
-                            visited.add(curr_positions[i+1])
+            for i in range(9): # Iterate from head (0) to knot 8
+                head_x, head_y = curr_positions[i]
+                tail_x, tail_y = curr_positions[i+1]
+                
+                dx = head_x - tail_x
+                dy = head_y - tail_y
+                
+                # Check if touching (distance is at most 1 in any direction)
+                if abs(dx) > 1 or abs(dy) > 1:
+                    # Move the tail by the sign of the difference (-1, 0, or 1)
+                    # This automatically handles diagonal moves
+                    new_x = tail_x + (1 if dx > 0 else -1 if dx < 0 else 0)
+                    new_y = tail_y + (1 if dy > 0 else -1 if dy < 0 else 0)
+                    
+                    curr_positions[i+1] = (new_x, new_y)
+                    
+                    # If this is the last knot (index 9), record the position
+                    if i + 1 == 9:
+                        visited.add(curr_positions[i+1])
             steps += 1
     if d == "U":
         while steps < n:
             curr_positions[0] = (curr_positions[0][0] - 1, curr_positions[0][1])
-            for i in range(10):
-                if i+1 < len(curr_positions):
-                    if not tail_is_touching(curr_positions[i], curr_positions[i+1]):
-                        curr_positions[i+1] = (curr_positions[i][0] + 1, curr_positions[i][1])
-                        if i+1 == 9:
-                            visited.add(curr_positions[i+1])
+            for i in range(9): # Iterate from head (0) to knot 8
+                head_x, head_y = curr_positions[i]
+                tail_x, tail_y = curr_positions[i+1]
+                
+                dx = head_x - tail_x
+                dy = head_y - tail_y
+                
+                # Check if touching (distance is at most 1 in any direction)
+                if abs(dx) > 1 or abs(dy) > 1:
+                    # Move the tail by the sign of the difference (-1, 0, or 1)
+                    # This automatically handles diagonal moves
+                    new_x = tail_x + (1 if dx > 0 else -1 if dx < 0 else 0)
+                    new_y = tail_y + (1 if dy > 0 else -1 if dy < 0 else 0)
+                    
+                    curr_positions[i+1] = (new_x, new_y)
+                    
+                    # If this is the last knot (index 9), record the position
+                    if i + 1 == 9:
+                        visited.add(curr_positions[i+1])
             steps += 1
     if d == "D":
         while steps < n:
             curr_positions[0] = (curr_positions[0][0] + 1, curr_positions[0][1])
-            for i in range(10):
-                if i+1 < len(curr_positions):
-                    if not tail_is_touching(curr_positions[i], curr_positions[i+1]):
-                        curr_positions[i+1] = (curr_positions[i][0] - 1, curr_positions[i][1])
-                        if i+1 == 9:
-                            visited.add(curr_positions[i+1])
+            for i in range(9): # Iterate from head (0) to knot 8
+                head_x, head_y = curr_positions[i]
+                tail_x, tail_y = curr_positions[i+1]
+                
+                dx = head_x - tail_x
+                dy = head_y - tail_y
+                
+                # Check if touching (distance is at most 1 in any direction)
+                if abs(dx) > 1 or abs(dy) > 1:
+                    # Move the tail by the sign of the difference (-1, 0, or 1)
+                    # This automatically handles diagonal moves
+                    new_x = tail_x + (1 if dx > 0 else -1 if dx < 0 else 0)
+                    new_y = tail_y + (1 if dy > 0 else -1 if dy < 0 else 0)
+                    
+                    curr_positions[i+1] = (new_x, new_y)
+                    
+                    # If this is the last knot (index 9), record the position
+                    if i + 1 == 9:
+                        visited.add(curr_positions[i+1])
             steps += 1
 print(f"Part 2: {len(visited)}")
