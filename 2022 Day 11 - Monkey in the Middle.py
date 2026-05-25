@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 class monkey:
     monkey_count = 0
 
@@ -8,6 +10,7 @@ class monkey:
         self.operation = operation
         self.test = test
         self.outcomes = outcomes
+        self.lcm = 2 * 19 * 13 * 17 * 5 * 3 * 7 * 11
 
     def execute_operation(self) -> None:
         new_worry_vals: list[int] = []
@@ -15,7 +18,7 @@ class monkey:
             local_vars = {}
             exec(' '.join(self.operation).replace('old', str(w)), globals(), local_vars)
             new_worry_vals.append(local_vars['new'])
-        self.items = [v // 3 for v in new_worry_vals]
+        self.items = [v % self.lcm for v in new_worry_vals]
         # print(f"{self.items = }")
     
     def apply_test(self) -> list[int]:
@@ -70,7 +73,7 @@ with open(file) as f:
     else:
         monke_lst.append(monkey(starting_items, operation, test, outcomes))
 
-
+orig_monke_lst = deepcopy(monke_lst)
 inspection_count = {i:0 for i in range(len(monke_lst))}
 round = 0
 while round < 20:
@@ -78,20 +81,24 @@ while round < 20:
         m.execute_operation()
         inspection_count[i] += len(m.items)
         idxs = m.apply_test()
-        # print(f"{idxs = }")
         for idx in idxs:
             monke_lst[idx].catch(m.toss())
-    # for m in monke_lst:
-    #     print(m)
-    #     print()
     round += 1
-count = [(k,v) for k,v in inspection_count.items()]
-count.sort(key=lambda l: l[1], reverse=True)
-print(f"Part 1: {count[0][1] * count[1][1]}")
-# for m in monke_lst:
-#     print(m)
-#     print()
 
-# print(monke_lst[0])
-# monke_lst[0].execute_operation()
-# print(monke_lst[0])
+count = [v for k,v in inspection_count.items()]
+count.sort(reverse=True)
+print(f"Part 1: {count[0] * count[1]}")
+
+inspection_count = {i:0 for i in range(len(monke_lst))}
+round = 0
+while round < 10000:
+    for i, m in enumerate(orig_monke_lst):
+        m.execute_operation()
+        inspection_count[i] += len(m.items)
+        idxs = m.apply_test()
+        for idx in idxs:
+            orig_monke_lst[idx].catch(m.toss())
+    round += 1
+count = [v for k,v in inspection_count.items()]
+count.sort(reverse=True)
+print(f"Part 2: {count[0] * count[1]}")
