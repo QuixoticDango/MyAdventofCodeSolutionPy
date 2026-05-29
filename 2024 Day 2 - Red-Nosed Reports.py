@@ -33,20 +33,16 @@ def Dampener(rows):
     
     # If you have more than two duplicates, no further testing is needed.
     if dupes > 1:
-        print(f"{dupes} duplicates found.")
-        print('UNSAFE: TOO MANY DUPES.')
         return False
     
     # Only rows w/ 0 or 1 duplicates are left. Use your function/method from part 1
     # to check if the row is safe.
     if isSafe(rows):
-        print('SAFE: RAN isSafe() AFTER DUPE CHECK')
         return True
 
     # If your row isn't safe and a duplicate was deleted, that means you'd need to 
     # change at least 1 more thing. It's unsafe.
     if dupes == 1:
-        print('UNSAFE: NOT SAFE AFTER DELETING ONE DUPE')
         return False
     
     # Only lists with no duplicates make it here.
@@ -65,13 +61,10 @@ def Dampener(rows):
                 b_rows = rows[:]
                 del b_rows[0]
                 if isSafe(a_rows):
-                    print('SAFE: ASC LIST WHERE LAST VALUE WAS TOO LARGE')
                     return True
                 elif isSafe(b_rows):
-                    print('SAFE: ASC LIST WHERE FIRST VALUE WAS TOO SMALL')
                     return True
                 else:
-                    print('UNSAFE: ASC LIST WHERE NOT LAST/FIRST VALUE WAS TOO LARGE/SMALL')
                     return False
     
     # See above.
@@ -83,13 +76,10 @@ def Dampener(rows):
                 d_rows = rows[:]
                 del d_rows[-1]
                 if isSafe(c_rows):
-                    print('SAFE: DESC LIST WHERE FIRST VALUE WAS TOO LARGE')
                     return True
                 elif isSafe(d_rows):
-                    print('SAFE: DESC LIST WHERE LAST VALUE WAS TOO SMALL')
                     return True
                 else:
-                    print('UNSAFE: DESC LIST WHERE NOT FIRST/LAST VALUE WAS TOO LARGE/SMALL')
                     return False
     
     # Only lists that are neither asc or desc with 0 dupes make it here.
@@ -108,13 +98,10 @@ def Dampener(rows):
             f_rows = rows[:]
             del f_rows[i+1]
             if isSafe(e_rows):
-                print('SAFE: "NEITHER" LIST WITH TOO LARGE NUM DELETED')
                 return True
             elif isSafe(f_rows):
-                print('SAFE: "NEITHER" LIST WITH TOO LARGE NUM DELETED')
                 return True
             else:
-                print('UNSAFE: "NEITHER" LIST STILL UNSAFE AFTER DEL LARGE NUM')
                 return False
         diff_list.append(difference)
 
@@ -130,7 +117,6 @@ def Dampener(rows):
     # If you have more than one of each, your list moved at least twice in both directions.
     # This is unfixable in one step.
     if neg > 1 and pos > 1:
-        print('UNSAFE: LIST SWITCHES DIR AT LEAST TWICE')
         return False
     
     # If you have a single negative or positive difference, make two new lists and delete both
@@ -142,13 +128,10 @@ def Dampener(rows):
         h_rows = rows[:]
         del h_rows[neg_index + 1]
         if isSafe(g_rows):
-            print('SAFE: NEG DIF CAUSE REMOVED')
             return True
         elif isSafe(h_rows):
-            print('SAFE: NEG DIF CAUSE REMOVED')
             return True
         else:
-            print('UNSAFE: NEG DIF REMOVED, STILL UNSAFE')
             return False
     
     if pos == 1:
@@ -158,16 +141,12 @@ def Dampener(rows):
         j_rows = rows[:]
         del j_rows[pos_index + 1]
         if isSafe(i_rows):
-            print('SAFE: POS DIF CAUSE REMOVED')
             return True
         elif isSafe(j_rows):
-            print('SAFE: POS DIF CAUSE REMOVED')
             return True
         else:
-            print('UNSAFE: POS DIF REMOVED, STILL UNSAFE')
             return False
         
-
 safe_rows = 0
 row = [0]
 while True:

@@ -19,10 +19,8 @@ def isValid(row):
 def isValid2(row):
     # Get the indices of valid inputs and put into tuple because it won't need to be updated
     valid_index = tuple(map(lambda x: int(x) - 1, row[0].split('-')))
-
     # Get the letter that needs to be checked and remove the colon at the end.
     check_letter = row[1][0]
-    
     # Get password
     password = row[2]
 
